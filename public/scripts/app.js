@@ -4,7 +4,9 @@
  * into functions and objects as needed.
  *
  */
-
+ var template;
+ var $albumsList;
+ var allAlbums;
 
 /* hard-coded data! */
 var sampleAlbums = [];
@@ -34,19 +36,46 @@ sampleAlbums.push({
            });
 /* end of hard-coded data */
 
-
-
-
 $(document).ready(function() {
+
   console.log('app.js loaded!');
+
+  $albumsList = $('#albums');
+
+  // compile handlebars template
+  var source = $('#album').html();
+  template = Handlebars.compile(source);
+
+  $.ajax({
+    method: 'GET',
+    url: '/api/albums',
+    success: handleAlbumSuccess,
+    error: handleAlbumError
+  });
+  // handleAlbumSuccess(sampleAlbums);
 });
-
-
-
 
 
 // this function takes a single album and renders it to the page
 function renderAlbum(album) {
-  console.log('rendering album:', album);
+  console.log('rendering album');
+  // $albumsList.empty();
+  // pass `allSnippets` into the template function
+  var albumHtml = template({ album: album });
 
+  // append html to the view
+  $albumsList.prepend(albumHtml);
+
+}
+
+function handleAlbumSuccess(albums) {
+  albums.forEach(function(album) {
+    renderAlbum(album);
+  });
+
+}
+
+function handleAlbumError(e) {
+  console.log('uh oh');
+  $('#albumTarget').text('Failed to load snippets, is the server working?');
 }

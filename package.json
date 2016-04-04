@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/tgaff/tunely#readme",
   "dependencies": {
-    "express": "^4.13.3"
+    "body-parser": "^1.15.0",
+    "bower": "^1.7.8",
+    "express": "^4.13.4",
+    "nodemon": "^1.9.1"
   }
 }

@@ -35,8 +35,8 @@
       <!-- albums! -->
       <div id='albums'>
 
-
-
+        <!-- handlebars template -->
+        <script id="album" type="text/x-handlebars-template">
 
           <!-- one album -->
           <div class="row album">
@@ -56,24 +56,23 @@
                       <ul class="list-group">
                         <li class="list-group-item">
                           <h4 class='inline-header'>Album Name:</h4>
-                          <span class='album-name'>Ladyhawke</span>
+                          <span class='album-name'>{{album.name}}</span>
                         </li>
 
                         <li class="list-group-item">
                           <h4 class='inline-header'>Artist Name:</h4>
-                          <span class='artist-name'>Ladyhawke</span>
+                          <span class='artist-name'>{{album.artistName}}</span>
                         </li>
 
                         <li class="list-group-item">
                           <h4 class='inline-header'>Released date:</h4>
-                          <span class='album-releaseDate'>2008, November 18</span>
+                          <span class='album-releaseDate'>{{album.releaseDate}}</span>
                         </li>
                       </ul>
                     </div>
 
                   </div>
                   <!-- end of album internal row -->
-
                   <div class='panel-footer'>
                   </div>
 
@@ -81,12 +80,11 @@
               </div>
             </div>
           </div>
-          <!-- end one album -->
-
-
-
-
+        </script>
       </div>
+
+
+          <!-- end one album -->
     </section>
 
     <!-- begin songModal: this is not visible until you call .modal() on it -->
