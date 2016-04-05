@@ -52,6 +52,17 @@ $(document).ready(function() {
     success: handleAlbumSuccess,
     error: handleAlbumError
   });
+
+  $('#album-form').on('submit', function(e) {
+    e.preventDefault();
+    $.ajax({
+      method: 'POST',
+      url: '/api/albums',
+      data: $(this).serialize(),
+      success: createAlbumSuccess,
+      error: createAlbumError
+    });
+  });
   // handleAlbumSuccess(sampleAlbums);
 });
 
@@ -65,17 +76,25 @@ function renderAlbum(album) {
 
   // append html to the view
   $albumsList.prepend(albumHtml);
-
 }
 
 function handleAlbumSuccess(albums) {
   albums.forEach(function(album) {
     renderAlbum(album);
   });
-
 }
 
 function handleAlbumError(e) {
+  console.log('uh oh');
+  $('#albumTarget').text('Failed to load snippets, is the server working?');
+}
+
+function createAlbumSuccess(album) {
+    renderAlbum(album);
+}
+
+
+function createAlbumError(e) {
   console.log('uh oh');
   $('#albumTarget').text('Failed to load snippets, is the server working?');
 }
