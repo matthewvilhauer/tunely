@@ -14,13 +14,29 @@ function index(req, res) {
 
 // POST /api/albums/:id/songs
 function create(req, res) {
-  console.log('albums create', req.body);
-  var newSong = new db.Song(req.body);
-  newSong.save(function SongsSaved(err, savedSong) {
+
+  var newSong = req.body;
+  console.log("RECEIVED FROM AJAX: ", newSong);
+
+  db.Album.findOne({_id: newSong.albumId }, function(err, foundAlbum) {
     if (err) {
-     return console.log(err);
-   }
-    res.json(savedSong);
+      res.status(500).json({error: err.message});
+    }
+    else if (foundAlbum === null) {
+      // Is this the same as checking if the foundBook is undefined?
+      res.status(404).json({error: "No Album found by this ID"});
+    }
+    // push req.body into songs array
+    foundAlbum.songs.push(req.body);
+    // save the album with the new song
+    foundAlbum.save(function(err, saved){
+      db.Album.find({}, function(err, albums){
+        res.status(201).json(albums);
+      });
+    });
+    // send the album back
+
+
   });
 }
 

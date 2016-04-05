@@ -69,6 +69,8 @@ $(document).ready(function() {
   $('#albums').on('click', '.add-song', function(e) {
     var id= $(this).parents('.album').data('album-id'); // "5665ff1678209c64e51b4e7b"
     console.log('id',id);
+    $('#myModal').attr('data-album-id', id);
+
 });
 
   //On clicking Save, save the song and add it to the Album
@@ -77,11 +79,20 @@ $(document).ready(function() {
     // get data from modal fields
     var songName = $('#songName').val();
     var trackNumber = $('#trackNumber').val();
+    var albumId = $('#myModal').attr('data-album-id');//var currentAlbumId;
+
+    myModalData = {
+      name: songName,
+      trackNumber: trackNumber,
+      albumId: albumId
+    };
+
+    console.log(myModalData);
     // POST to SERVER
     $.ajax({
       method: 'POST',
-      url: '/api/albums/'+$(this).attr('data-id')+'/songs',
-      data: $(this).serializeArray(),
+      url: '/api/albums/'+$('#myModal').attr('data-album-id')+'/songs',
+      data: myModalData,
       success: newSongSuccess,
       error: newSongError
     });
@@ -111,6 +122,7 @@ function renderAlbum(album) {
   $albumsList.prepend(albumHtml);
   $('#add-songs').append(songsFormatted);
 }
+
 
 function handleAlbumSuccess(albums) {
   albums.forEach(function(album) {
@@ -145,31 +157,26 @@ function buildSongsHtml(songs) {
   return songsHTML;
 }
 
-function handleNewSongButtonClick(json) {
-  var album = json;
-  var albumId = album._id;
-
-    for (var index = 0; index < allAlbums.length; index++) {
-        if(allBooks[index]._id === albumId) {
-          $('#myModal').data('album-id', currentAlbumId);
-          $('#myModal').modal();
-        }
-    }
-  renderAlbum();
-}
+//
+// function handleNewSongButtonClick(json) {
+//   var album = json;
+//   var albumId = album._id;
+//
+//     for (var index = 0; index < allAlbums.length; index++) {
+//         if(allBooks[index]._id === albumId) {
+//           // $('#myModal').data('album-id', currentAlbumId);
+//           // $('#myModal').modal();
+//         }
+//     }
+//   renderAlbum();
+// }
 
 function newSongSuccess(json) {
   console.log("Trying to save a song");
-  var album = json;
-  // var albumId = album._id;
-  // // find the album with the correct ID and update it
-  // for(var index = 0; index < allAlbums.length; index++) {
-  //   if(allAlbums[index]._id === albumId) {
-  //     allAlbums[index] = album;
-  //     break;  // we found our album - no reason to keep searching (this is why we didn't use forEach)
-  //   }
-  // }
-  renderAlbum(album);
+  var albums = json;
+  console.log(albums);
+  $albumsList.empty();
+  handleAlbumSuccess(albums);
 }
 
 function newSongError() {

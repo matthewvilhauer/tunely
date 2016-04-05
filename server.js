@@ -42,7 +42,7 @@ app.get('/api/albums', controllers.albums.index);
 app.post('/api/albums', controllers.albums.create);
 
 // Create a new song
-app.post('/api/albums/:id/songs', controllers.songs.create);
+app.post('/api/albums/:album_id/songs', controllers.songs.create);
 
 /**********
  * SERVER *

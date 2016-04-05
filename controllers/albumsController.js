@@ -38,7 +38,6 @@ function update(req, res) {
   // FILL ME IN !
 }
 
-
 // export public methods here
 module.exports = {
   index: index,
