@@ -99,7 +99,7 @@
         <script id="album" type="text/x-handlebars-template">
 
           <!-- one album -->
-          <div class="row album">
+          <div class="row album" data-album-id={{album._id}}>
 
             <div class="col-md-10 col-md-offset-1">
               <div class="panel panel-default">
@@ -113,7 +113,7 @@
                     </div>
 
                     <div class="col-md-9 col-xs-12">
-                      <ul class="list-group">
+                      <ul class="list-group" id="add-songs">
                         <li class="list-group-item">
                           <h4 class='inline-header'>Album Name:</h4>
                           <span class='album-name'>{{album.name}}</span>
@@ -128,12 +128,16 @@
                           <h4 class='inline-header'>Released date:</h4>
                           <span class='album-releaseDate'>{{album.releaseDate}}</span>
                         </li>
+                        <li class="list-group-item">
+                          <h4 class='inline-header'>Genres:</h4>
+                          <span class='album-releaseDate'>{{album.genres}}</span>
+                        </li>
                       </ul>
                     </div>
-
                   </div>
                   <!-- end of album internal row -->
                   <div class='panel-footer'>
+                    <button class='btn btn-primary add-song' data-toggle="modal" data-target="#myModal" data-id="myModal">Add Song</button>
                   </div>
 
                 </div>
@@ -143,12 +147,11 @@
         </script>
       </div>
 
-
           <!-- end one album -->
     </section>
 
     <!-- begin songModal: this is not visible until you call .modal() on it -->
-    <div class="modal fade" tabindex="-1" role="dialog" id="songModal">
+    <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">

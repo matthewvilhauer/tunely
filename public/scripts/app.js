@@ -8,6 +8,7 @@
  var $albumsList;
  var allAlbums;
 
+
 /* hard-coded data! */
 var sampleAlbums = [];
 sampleAlbums.push({
@@ -63,19 +64,52 @@ $(document).ready(function() {
       error: createAlbumError
     });
   });
+
+  //If the Add Songs button is clicked, activate the modal
+  $('#albums').on('click', '.add-song', function(e) {
+    var id= $(this).parents('.album').data('album-id'); // "5665ff1678209c64e51b4e7b"
+    console.log('id',id);
+});
+
+  //On clicking Save, save the song and add it to the Album
+  $('#saveSong').on('click', function handleNewSongSubmit(e) {
+    e.preventDefault();
+    // get data from modal fields
+    var songName = $('#songName').val();
+    var trackNumber = $('#trackNumber').val();
+    // POST to SERVER
+    $.ajax({
+      method: 'POST',
+      url: '/api/albums/'+$(this).attr('data-id')+'/songs',
+      data: $(this).serializeArray(),
+      success: newSongSuccess,
+      error: newSongError
+    });
+    // clear form
+    $('#myModal input').val('');
+    // close modal
+    $('#myModal').modal('hide');
+    // update the correct album to show the new song
+  });
   // handleAlbumSuccess(sampleAlbums);
 });
 
 
 // this function takes a single album and renders it to the page
 function renderAlbum(album) {
+
+  var $songs = album.songs;
+
+  var songsFormatted = buildSongsHtml($songs);
+
   console.log('rendering album');
   // $albumsList.empty();
   // pass `allSnippets` into the template function
-  var albumHtml = template({ album: album });
+  var albumHtml = template({ album: album});
 
   // append html to the view
   $albumsList.prepend(albumHtml);
+  $('#add-songs').append(songsFormatted);
 }
 
 function handleAlbumSuccess(albums) {
@@ -93,8 +127,51 @@ function createAlbumSuccess(album) {
     renderAlbum(album);
 }
 
-
 function createAlbumError(e) {
   console.log('uh oh');
   $('#albumTarget').text('Failed to load snippets, is the server working?');
+}
+
+function buildSongsHtml(songs) {
+  var songText = " &ndash; ";
+  songs.forEach(function(song) {
+    songText = songText + "(" + song.trackNumber + ") " + song.name + " &ndash; ";
+  });
+  var songsHTML =
+"              <li class='list-group-item'>" +
+"                <h4 class='inline-header'>Songs:</h4>" +
+"                <span>" + songText + "</span>" +
+"              </li>";
+  return songsHTML;
+}
+
+function handleNewSongButtonClick(json) {
+  var album = json;
+  var albumId = album._id;
+
+    for (var index = 0; index < allAlbums.length; index++) {
+        if(allBooks[index]._id === albumId) {
+          $('#myModal').data('album-id', currentAlbumId);
+          $('#myModal').modal();
+        }
+    }
+  renderAlbum();
+}
+
+function newSongSuccess(json) {
+  console.log("Trying to save a song");
+  var album = json;
+  // var albumId = album._id;
+  // // find the album with the correct ID and update it
+  // for(var index = 0; index < allAlbums.length; index++) {
+  //   if(allAlbums[index]._id === albumId) {
+  //     allAlbums[index] = album;
+  //     break;  // we found our album - no reason to keep searching (this is why we didn't use forEach)
+  //   }
+  // }
+  renderAlbum(album);
+}
+
+function newSongError() {
+  console.log('adding new song error!');
 }

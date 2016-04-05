@@ -8,25 +8,29 @@ albumsList.push({
               artistName: 'Nine Inch Nails',
               name: 'The Downward Spiral',
               releaseDate: '1994, March 8',
-              genres: [ 'industrial', 'industrial metal' ]
+              genres: [ 'industrial', 'industrial metal' ],
+              songs: []
             });
 albumsList.push({
               artistName: 'Metallica',
               name: 'Metallica',
               releaseDate: '1991, August 12',
-              genres: [ 'heavy metal' ]
+              genres: [ 'heavy metal' ],
+              songs: []
             });
 albumsList.push({
               artistName: 'The Prodigy',
               name: 'Music for the Jilted Generation',
               releaseDate: '1994, July 4',
-              genres: [ 'electronica', 'breakbeat hardcore', 'rave', 'jungle' ]
+              genres: [ 'electronica', 'breakbeat hardcore', 'rave', 'jungle' ],
+              songs: []
             });
 albumsList.push({
               artistName: 'Johnny Cash',
               name: 'Unchained',
               releaseDate: '1996, November 5',
-              genres: [ 'country', 'rock' ]
+              genres: [ 'country', 'rock' ],
+              songs: []
             });
 
 var sampleSongs = [];
@@ -52,6 +56,11 @@ sampleSongs.push({ name: 'Aeon',
 sampleSongs.push({ name: 'Tight Rope',
                    trackNumber: 7
 });
+
+albumsList.forEach(function(album) {
+  album.songs = sampleSongs;
+});
+
 
 
 db.Album.remove({}, function(err, albums){

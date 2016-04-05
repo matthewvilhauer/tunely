@@ -38,9 +38,11 @@ app.get('/api', controllers.api.index);
 
 //Get all albums
 app.get('/api/albums', controllers.albums.index);
-
 // Create a new album
 app.post('/api/albums', controllers.albums.create);
+
+// Create a new song
+app.post('/api/albums/:id/songs', controllers.songs.create);
 
 /**********
  * SERVER *
